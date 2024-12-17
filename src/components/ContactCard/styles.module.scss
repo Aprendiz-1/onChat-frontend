@@ -1,0 +1,24 @@
+.card_container {
+    width: 84%;
+    min-height: 55px;
+    display: flex;
+    align-items: center;
+    outline: none;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.09);
+    border-radius: 10px;
+    padding: 0 15px;
+    margin-bottom: 8px;
+    transition: 100ms linear;
+
+    span {
+        font-size: 15px;
+        font-weight: 500;
+        color: #f2f2f2;
+        margin-left: 10px;
+    }
+}
+
+.card_container:hover {
+    background-color: #222;
+}
