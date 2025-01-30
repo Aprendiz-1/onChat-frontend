@@ -1,6 +1,4 @@
 .messageContainer {
-    width: 120px;
-    max-width: 200px;
     display: flex;
     flex-direction: column;
     padding: 8px 10px;
@@ -9,10 +7,6 @@
 
     .messageTitle {
         font-size: 13px;
-        margin-bottom: 7px;
-    }
-
-    .messageText {
-        color: #f2f2f2;
+        margin-bottom: 8px;
     }
 }

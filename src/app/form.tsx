@@ -34,10 +34,9 @@ export default function LoginForm() {
       };
 
       localStorage.setItem("user@data", JSON.stringify(userData));
-      console.log("indo para charts");
       setTimeout(() => {
         router.push("/chats");
-      }, 2000);
+      }, 1000);
     } catch (error) {
       console.log(error);
       alert(`Erro ao logar usuário: ${error?.message}`);
@@ -46,18 +45,28 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleLogin} className={styles.form_content}>
-      <input
-        placeholder="E-mail"
-        value={email}
-        type="email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        placeholder="Senha"
-        value={password}
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+      <div className={styles.inputContainer}>
+        <label htmlFor="email">E-mail</label>
+        <input
+          id="email"
+          placeholder="user@email.com"
+          value={email}
+          type="email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+
+      <div className={styles.inputContainer}>
+        <label htmlFor="pass">Senha</label>
+        <input
+          id="pass"
+          placeholder="* * * * *"
+          value={password}
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+
       <button type="submit">Login</button>
       <Link href="/register">Criar conta</Link>
     </form>

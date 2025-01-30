@@ -19,16 +19,16 @@ export default function MessageItem({
       className={styles.messageContainer}
       style={{
         alignSelf: isSender ? "flex-end" : "flex-start",
-        backgroundColor: isSender ? "rgba(255, 255, 255, 0.1)" : "#6b32ad62",
+        backgroundColor: isSender ? "steelblue" : "rgba(255, 255, 255, 0.7) ",
       }}
     >
       <span
         className={styles.messageTitle}
-        style={{ color: isSender ? "#874fc7" : "#f2f2f2" }}
+        style={{ color: isSender ? "#f2f2f2" : "steelblue" }}
       >
         {isSender ? user.name : recipientName}
       </span>
-      <span className={styles.messageText}>{data.text}</span>
+      <span style={{ color: isSender ? "#f2f2f2" : "#222" }}>{data.text}</span>
     </div>
   );
 }

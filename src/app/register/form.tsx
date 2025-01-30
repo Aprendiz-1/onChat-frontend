@@ -31,23 +31,37 @@ export default function RegisterForm() {
 
   return (
     <form onSubmit={handleRegister} className={styles.form_content}>
-      <input
-        placeholder="Nome"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        placeholder="E-mail"
-        value={email}
-        type="email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        placeholder="Senha"
-        value={password}
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+      <div className={styles.inputContainer}>
+        <label htmlFor="nome">Nome</label>
+        <input
+          id="nome"
+          placeholder="Seu nome"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+
+      <div className={styles.inputContainer}>
+        <label htmlFor="email">E-mail</label>
+        <input
+          id="email"
+          placeholder="user@email.com"
+          value={email}
+          type="email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+
+      <div className={styles.inputContainer}>
+        <label htmlFor="pass">Senha</label>
+        <input
+          id="pass"
+          placeholder="* * * * *"
+          value={password}
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
       <button type="submit">Criar conta</button>
       <Link href="/">Fazer login</Link>
     </form>

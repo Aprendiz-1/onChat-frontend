@@ -19,7 +19,9 @@ export default function ContactCard({ data, selectConversation }: ContactProp) {
         alt="Avatar"
         height={40}
       />
-      <span>{data.name}</span>
+      <span>
+        {data.name} ({data?.status})
+      </span>
     </button>
   );
 }
