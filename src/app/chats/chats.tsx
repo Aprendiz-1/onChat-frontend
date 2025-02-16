@@ -1,19 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ContactCard from "@/components/ContactCard";
-import { socket } from "@/socket";
 import { api } from "@/services/api";
-import MessageItem from "@/components/MessageItem";
-import { BiSolidMessageSquareDetail } from "react-icons/bi";
-import { BsFillPeopleFill } from "react-icons/bs";
-import { FaCircleUser } from "react-icons/fa6";
-import { IoMdLogOut } from "react-icons/io";
-import { IoSend } from "react-icons/io5";
-import Image from "next/image";
-import user_default from "../../assets/user_default.png";
-import { removeCookie } from "@/cookies";
 import styles from "../../styles/chat.module.scss";
+import Sidebar from "@/components/Sidebar";
+import UserCard from "@/components/UserCard";
+import ContactsContent from "@/components/ContactsContent";
+import MessagesCard from "@/components/MessagesCard";
 
 type ChatProp = {
   token: string;
@@ -27,17 +20,15 @@ export type UserProps = {
   status: string;
 };
 
-type ConversationProps = {
+export type ConversationProps = {
   conversationId: string;
   recipientName: string;
   recipientAvatar?: string;
 };
 
-export type MessageProps = {
-  conversationId: string;
-  sender: string;
-  text: string;
-  timestamp: Date;
+export type CardsListageProps = {
+  type: string;
+  list: UserProps[];
 };
 
 export default function ChatsPage({ token }: ChatProp) {
@@ -48,21 +39,17 @@ export default function ChatsPage({ token }: ChatProp) {
     avatar: "",
     status: "",
   });
-  const [socketInstance] = useState(socket(user._id));
-  const [messageText, setMessageText] = useState("");
-  const [contacts, setContacts] = useState<Array<UserProps>>([]);
+  const [users, setUsers] = useState<Array<UserProps>>([]);
+  const [conversations, setConversations] = useState<Array<UserProps>>([]);
+  const [cardsListage, setCardsListage] = useState<CardsListageProps>();
   const [currentConversation, setCurrentConversation] =
     useState<ConversationProps>();
-  const [messages, setMessages] = useState<Array<MessageProps>>([]);
 
-  async function loadContacts() {
-    try {
-      const response = await api.get("/contacts");
-      setContacts(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  useEffect(() => {
+    loadUser();
+    loadContacts();
+    loadConversations();
+  }, []);
 
   async function loadUser() {
     try {
@@ -79,35 +66,30 @@ export default function ChatsPage({ token }: ChatProp) {
     }
   }
 
-  useEffect(() => {
-    loadUser();
-    loadContacts();
-
-    socketInstance.on("receive_message", (message) => {
-      if (message.conversationId === currentConversation?.conversationId) {
-        setMessages((mess) => [...mess, message]);
-      }
-    });
-
-    return () => {
-      socketInstance.off("receive_message");
-      setUser({ ...user, status: "offline" });
-    };
-  }, [socketInstance]);
-
-  async function loadMessages(conversationId: string) {
-    if (!conversationId) {
-      return;
-    }
-
+  async function loadContacts() {
     try {
-      const response = await api.get("/messages", {
-        params: {
-          conversationId: conversationId,
+      const response = await api.get("/contacts");
+      setUsers(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function loadConversations() {
+    try {
+      const response = await api.get("/list-conversations", {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       });
 
-      setMessages(response.data);
+      const convs = response.data.map((conv) => {
+        const otherParticipant = conv.participants[1]; // ajustar lógica
+        return { ...otherParticipant };
+      });
+
+      setConversations(convs);
+      setCardsListage({ type: "contacts", list: convs });
     } catch (error) {
       console.log(error);
     }
@@ -120,122 +102,40 @@ export default function ChatsPage({ token }: ChatProp) {
       });
 
       const conversation = response.data;
+      const otherParticipant = conversation.participants[1]; // ajustar lógica
+
       setCurrentConversation({
         conversationId: conversation._id,
-        recipientName: recipient.name,
-        recipientAvatar: recipient?.avatar,
+        ...otherParticipant,
       });
-
-      loadMessages(conversation._id);
     } catch (error) {
       console.log(error);
     }
   }
 
-  function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === "Enter") {
-      handleSendMessage();
-    }
-  }
-
-  function handleSendMessage() {
-    if (messageText === "" || !currentConversation?.conversationId) {
-      return;
-    }
-
-    const messageData = {
-      conversationId: currentConversation?.conversationId,
-      text: messageText,
-      sender: user._id,
-    };
-
-    socketInstance.emit("send_message", messageData);
-    setMessages((mess) => [...mess, messageData]);
-    setMessageText("");
-  }
-
-  function logOut() {
-    localStorage.clear();
-    removeCookie();
+  function setContactsList(listConversations: CardsListageProps) {
+    setCardsListage(listConversations);
   }
 
   return (
     <div className={styles.chat_container}>
-      <div className={styles.sidebar_container}>
-        <span>{user.status}</span>
-        <span>{user.name}</span>
-        <div
-          style={{
-            display: "flex",
-            borderWidth: 2,
-            borderStyle: "solid",
-            borderColor: user.status === "online" ? "#f00000" : "#555",
-            borderRadius: 30,
-          }}
-        >
-          <FaCircleUser size={35} color="#fff" />
-        </div>
-        <div className={styles.center_content}>
-          <BiSolidMessageSquareDetail size={25} color="#fff" />
-          <BsFillPeopleFill size={25} color="#fff" />
-        </div>
+      <Sidebar
+        setPeople={() => setContactsList({ type: "people", list: users })}
+        setContacts={() =>
+          setContactsList({ type: "contacts", list: conversations })
+        }
+      />
 
-        <button onClick={logOut} className={styles.logOut_button}>
-          <IoMdLogOut size={30} color="#222" />
-        </button>
-      </div>
-
-      <div className={styles.contacts_container}>
-        {contacts &&
-          contacts.map((item) => (
-            <ContactCard
-              key={item._id}
-              data={item}
-              selectConversation={createConversation}
-            />
-          ))}
+      <div className={styles.cards_container}>
+        <UserCard user={user} />
+        <ContactsContent
+          contacts={cardsListage}
+          createConversation={createConversation}
+        />
       </div>
 
       <div className={styles.messages_container}>
-        {/* {currentConversation && (
-          <div className={styles.top_content}>
-            <Image
-              src={
-                currentConversation?.recipientAvatar
-                  ? currentConversation?.recipientAvatar
-                  : user_default
-              }
-              alt="Avatar"
-              height={45}
-            />
-
-            <h3>{currentConversation?.recipientName}</h3>
-          </div>
-        )} */}
-
-        <div className={styles.messages_content}>
-          {messages.map((mess, index) => (
-            <MessageItem
-              key={index}
-              data={mess}
-              user={user}
-              recipientName={currentConversation?.recipientName}
-            />
-          ))}
-        </div>
-
-        <div className={styles.input_content}>
-          <input
-            placeholder="Digite aqui"
-            value={messageText}
-            onChange={(e) => setMessageText(e.target.value)}
-            onKeyDown={handleKeyPress}
-          />
-
-          <button onClick={handleSendMessage}>
-            <IoSend size={22} color="#fff" />
-          </button>
-        </div>
+        <MessagesCard user={user} currentConversation={currentConversation} />
       </div>
     </div>
   );

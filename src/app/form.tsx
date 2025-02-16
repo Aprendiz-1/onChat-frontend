@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import styles from "../styles/auth.module.scss";
 import { FormEvent, useState } from "react";
 import { api } from "@/services/api";
 import { useRouter } from "next/navigation";
 import { setCookie } from "../cookies";
+import LoginInput from "@/components/LoginInput";
+import styles from "../styles/auth.module.scss";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -45,27 +46,21 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleLogin} className={styles.form_content}>
-      <div className={styles.inputContainer}>
-        <label htmlFor="email">E-mail</label>
-        <input
-          id="email"
-          placeholder="user@email.com"
-          value={email}
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
+      <LoginInput
+        title="E-mail"
+        keyId="email"
+        placeholderText="user@email.com"
+        value={email}
+        onChangeText={setEmail}
+      />
 
-      <div className={styles.inputContainer}>
-        <label htmlFor="pass">Senha</label>
-        <input
-          id="pass"
-          placeholder="* * * * *"
-          value={password}
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
+      <LoginInput
+        title="Senha"
+        keyId="pass"
+        placeholderText="* * * * *"
+        value={password}
+        onChangeText={setPassword}
+      />
 
       <button type="submit">Login</button>
       <Link href="/register">Criar conta</Link>

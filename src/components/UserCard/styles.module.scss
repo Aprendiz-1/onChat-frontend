@@ -1,0 +1,44 @@
+.user_card {
+  height: 145px;
+  display: flex;
+  align-items: center;
+  background-color: #242441;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 12px;
+  position: relative;
+
+  .select_status {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 2px 0;
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    color: #f0f0f0;
+    background-color: #4bc16e;
+  }
+
+  img {
+    border-radius: 50%;
+    border: 2px solid #4bc16e;
+  }
+
+  .user_text_content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+
+    .user_name {
+      font-size: 22px;
+      color: #f0f0f0;
+      margin-bottom: 2px;
+    }
+
+    .user_email {
+      font-size: 11px;
+      color: #c9c9c9;
+    }
+  }
+}

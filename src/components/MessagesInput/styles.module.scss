@@ -1,0 +1,29 @@
+.input_content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+
+  input {
+    width: 90%;
+    height: 45px;
+    color: #f0f0f0;
+    outline: none;
+    border: none;
+    background: none;
+    padding: 0 12px;
+    border: 2px solid #6f6f6f;
+    border-radius: 30px;
+  }
+
+  button {
+    width: 45px;
+    height: 45px;
+    outline: none;
+    border: none;
+    background-color: rgba(96, 55, 194, 0.7);
+    border-radius: 50%;
+    margin-left: 12px;
+  }
+}

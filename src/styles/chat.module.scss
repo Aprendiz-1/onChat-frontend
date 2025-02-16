@@ -2,135 +2,21 @@
     width: 100vw;
     height: 100vh;
     display: flex;
-    align-items: center;
-    background-color: #ddd;
+    background-color: #14142C;
   
-    .sidebar_container {
-      width: 5vw;
+    .cards_container {
+      width: 330px;
       height: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: space-between;
-      background-color: steelblue;
-      padding: 2% 0;
-  
-      .center_content {
-        height: 19%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        padding: 15px 0;
-      }
-  
-      .logOut_button {
-        width: 45px;
-        height: 45px;
-        background-color: #f2f2f2;
-        outline: none;
-        border: none;
-        border-radius: 50%;
-      }
-    }
-  
-    .contacts_container {
-      width: 26vw;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      background-color: #f2f2f2;
-      overflow-y: scroll;
-      padding: 0 10px;
-    }
-  
-    .contacts_container::-webkit-scrollbar-track {
-      background-color: #ddd;
-    }
-  
-    .contacts_container::-webkit-scrollbar {
-      width: 6px;
-      background-color: #222;
-    }
-    
-    .contacts_container::-webkit-scrollbar-thumb {
-        background-color: #dad7d7;
+      padding: 15px 0;
     }
   
     .messages_container {
-      width: 69vw;
+      flex: 1;
       height: 100%;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      position: relative;
-  
-      .top_content {
-        width: 100%;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        background-color: #fff;
-        border-bottom-right-radius: 20px;
-        border-bottom-left-radius: 20px;
-        padding: 0 20px;
-  
-        h3 {
-          color: #222;
-          margin-left: 10px;
-        }
-      }
-  
-      .messages_content {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        overflow-y: scroll;
-        padding: 0 20px 50px 20px;
-      }
-  
-      .messages_content::-webkit-scrollbar-track {
-        background-color: #ddd;
-      }
-    
-      .messages_content::-webkit-scrollbar {
-        width: 12px;
-      }
-      
-      .messages_content::-webkit-scrollbar-thumb {
-          background-color: #555;
-          border-radius: 20px;
-      }
-  
-      .input_content {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        left: 0;
-        bottom: 5px;
-  
-        input {
-          width: 90%;
-          height: 45px;
-          outline: none;
-          border: none;
-          background-color: #fff;
-          padding: 0 12px;
-          border-radius: 30px;
-        }
-  
-        button {
-          width: 45px;
-          height: 45px;
-          outline: none;
-          border: none;
-          background-color: steelblue;
-          border-radius: 50%;
-          margin: 0 12px;
-        }
-      }
+      padding: 15px;
     }
   }
-  

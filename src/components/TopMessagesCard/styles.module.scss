@@ -1,0 +1,19 @@
+.top_content {
+  display: flex;
+  align-items: center;
+
+  .top_text {
+    margin-left: 15px;
+
+    h3 {
+      display: block;
+      font-size: 25px;
+      color: #f0f0f0;
+    }
+
+    span {
+      color: #c9c9c9;
+      font-size: 14px;
+    }
+  }
+}

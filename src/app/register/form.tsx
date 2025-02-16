@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import styles from "../../styles/auth.module.scss";
 import { FormEvent, useState } from "react";
 import { api } from "@/services/api";
 import { useRouter } from "next/navigation";
+import LoginInput from "@/components/LoginInput";
+import styles from "../../styles/auth.module.scss";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -31,37 +32,30 @@ export default function RegisterForm() {
 
   return (
     <form onSubmit={handleRegister} className={styles.form_content}>
-      <div className={styles.inputContainer}>
-        <label htmlFor="nome">Nome</label>
-        <input
-          id="nome"
-          placeholder="Seu nome"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
+      <LoginInput
+        title="Nome"
+        keyId="nome"
+        placeholderText="Seu nome"
+        value={name}
+        onChangeText={setName}
+      />
 
-      <div className={styles.inputContainer}>
-        <label htmlFor="email">E-mail</label>
-        <input
-          id="email"
-          placeholder="user@email.com"
-          value={email}
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
+      <LoginInput
+        title="E-mail"
+        keyId="email"
+        placeholderText="user@email.com"
+        value={email}
+        onChangeText={setEmail}
+      />
 
-      <div className={styles.inputContainer}>
-        <label htmlFor="pass">Senha</label>
-        <input
-          id="pass"
-          placeholder="* * * * *"
-          value={password}
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
+      <LoginInput
+        title="Senha"
+        keyId="pass"
+        placeholderText="* * * * *"
+        value={password}
+        onChangeText={setPassword}
+      />
+
       <button type="submit">Criar conta</button>
       <Link href="/">Fazer login</Link>
     </form>

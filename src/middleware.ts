@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
     const cookie = await cookies();
-    const token = cookie.get('user@token');
+    const token = cookie.get('user@token')?.value;
 
     const protectedRoutes = ['/chats'];
     const isProtectedRoutes = protectedRoutes.includes(request.nextUrl.pathname);
