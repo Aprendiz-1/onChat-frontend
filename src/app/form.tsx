@@ -51,6 +51,7 @@ export default function LoginForm() {
         keyId="email"
         placeholderText="user@email.com"
         value={email}
+        type="email"
         onChangeText={setEmail}
       />
 
@@ -59,6 +60,7 @@ export default function LoginForm() {
         keyId="pass"
         placeholderText="* * * * *"
         value={password}
+        type="password"
         onChangeText={setPassword}
       />
 

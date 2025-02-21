@@ -8,6 +8,10 @@ export async function middleware(request: NextRequest) {
     const protectedRoutes = ['/chats'];
     const isProtectedRoutes = protectedRoutes.includes(request.nextUrl.pathname);
 
+    if(!isProtectedRoutes && token) {
+        return NextResponse.redirect(new URL('/chats', request.url));
+    }
+
     if(isProtectedRoutes && !token) {
         return NextResponse.redirect(new URL('/', request.url));
     }

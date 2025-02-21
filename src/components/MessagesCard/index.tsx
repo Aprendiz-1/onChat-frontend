@@ -3,6 +3,7 @@ import styles from "./styles.module.scss";
 import { useEffect, useState } from "react";
 import MessagesInput from "../MessagesInput";
 import TopMessagesCard from "../TopMessagesCard";
+import { BiMessageSquareX } from "react-icons/bi";
 import { api } from "@/services/api";
 import { socket } from "@/socket";
 import { ConversationProps, UserProps } from "@/app/chats/chats";
@@ -74,33 +75,38 @@ export default function MessagesCard({
     setMessageText("");
   }
 
+  if (messages.length === 0 && !currentConversation) {
+    return (
+      <div className={styles.messages_card}>
+        <div className={styles.no_message_content}>
+          <BiMessageSquareX size={90} color="#404064" />
+          <p>Não há mensagens para exibir</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.messages_card}>
-      {messages.length !== 0 ? (
-        <>
-          <TopMessagesCard currentConversation={currentConversation} />
+      <TopMessagesCard currentConversation={currentConversation} />
 
-          <div className={styles.messages_content}>
-            {messages.map((mess, index) => (
-              <MessageItem
-                key={index}
-                data={mess}
-                user={user}
-                recipientName={currentConversation?.name}
-              />
-            ))}
-          </div>
-
-          <MessagesInput
-            handleSendMessage={handleSendMessage}
-            handleKeyPress={handleKeyPress}
-            message={messageText}
-            setMessage={setMessageText}
+      <div className={styles.messages_content}>
+        {messages.map((mess, index) => (
+          <MessageItem
+            key={index}
+            data={mess}
+            user={user}
+            recipientName={currentConversation?.name}
           />
-        </>
-      ) : (
-        <p>Sem mensagens por aqui, amigao</p>
-      )}
+        ))}
+      </div>
+
+      <MessagesInput
+        handleSendMessage={handleSendMessage}
+        handleKeyPress={handleKeyPress}
+        message={messageText}
+        setMessage={setMessageText}
+      />
     </div>
   );
 }

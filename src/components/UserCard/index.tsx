@@ -6,22 +6,15 @@ import { UserProps } from "@/app/chats/chats";
 
 type UserCardProp = {
   user: UserProps;
+  openModal: () => void;
 };
 
-export default function UserCard({ user }: UserCardProp) {
+export default function UserCard({ user, openModal }: UserCardProp) {
   return (
     <div className={styles.user_card}>
-      <select onChange={() => {}} className={styles.select_status}>
-        <option value="online" style={{ backgroundColor: "#4BC16E" }}>
-          Online
-        </option>
-        <option value="offline" style={{ backgroundColor: "#fdd835" }}>
-          Ausente
-        </option>
-        <option value="offline" style={{ backgroundColor: "#fd3535" }}>
-          Ocupado
-        </option>
-      </select>
+      <div className={styles.user_status_content}>
+        <span>Online</span>
+      </div>
 
       <Image
         src={user.avatar ? user.avatar : user_default}
@@ -34,11 +27,9 @@ export default function UserCard({ user }: UserCardProp) {
         <span className={styles.user_email}>{user?.email}</span>
       </div>
 
-      <TbEdit
-        size={18}
-        color="#c9c9c9"
-        style={{ position: "absolute", bottom: 12, right: 12 }}
-      />
+      <button onClick={openModal} className={styles.edit_button}>
+        <TbEdit size={18} color="#c9c9c9" />
+      </button>
     </div>
   );
 }

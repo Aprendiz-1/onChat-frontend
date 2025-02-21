@@ -5,6 +5,7 @@ type LoginInputProps = {
   keyId: string;
   placeholderText: string;
   value: string;
+  type: string;
   onChangeText: (value: string) => void;
 };
 
@@ -13,6 +14,7 @@ export default function LoginInput({
   keyId,
   placeholderText,
   value,
+  type,
   onChangeText,
 }: LoginInputProps) {
   return (
@@ -22,6 +24,7 @@ export default function LoginInput({
         id={keyId}
         placeholder={placeholderText}
         value={value}
+        type={type}
         onChange={(e) => onChangeText(e.target.value)}
       />
     </div>

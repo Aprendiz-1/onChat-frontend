@@ -7,6 +7,7 @@ import Sidebar from "@/components/Sidebar";
 import UserCard from "@/components/UserCard";
 import ContactsContent from "@/components/ContactsContent";
 import MessagesCard from "@/components/MessagesCard";
+import EditUserModel from "@/components/EditUserModal";
 
 type ChatProp = {
   token: string;
@@ -44,6 +45,7 @@ export default function ChatsPage({ token }: ChatProp) {
   const [cardsListage, setCardsListage] = useState<CardsListageProps>();
   const [currentConversation, setCurrentConversation] =
     useState<ConversationProps>();
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     loadUser();
@@ -127,7 +129,7 @@ export default function ChatsPage({ token }: ChatProp) {
       />
 
       <div className={styles.cards_container}>
-        <UserCard user={user} />
+        <UserCard user={user} openModal={() => setModalVisible(true)} />
         <ContactsContent
           contacts={cardsListage}
           createConversation={createConversation}
@@ -137,6 +139,10 @@ export default function ChatsPage({ token }: ChatProp) {
       <div className={styles.messages_container}>
         <MessagesCard user={user} currentConversation={currentConversation} />
       </div>
+
+      {modalVisible && (
+        <EditUserModel closeModal={() => setModalVisible(false)} />
+      )}
     </div>
   );
 }

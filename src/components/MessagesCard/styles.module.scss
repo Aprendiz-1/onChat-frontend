@@ -13,12 +13,29 @@
     padding: 0 12px;
   }
 
-  .messages_content::-webkit-scrollbar {
-    width: 12px;
+  .messages_content::-webkit-scrollbar-track {
+    background-color: transparent;
   }
-
+  
+  .messages_content::-webkit-scrollbar {
+    width: 10px;
+  }
+  
   .messages_content::-webkit-scrollbar-track {
     background-color: #404064;
     border-radius: 10px;
+  }
+
+  .no_message_content {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      color: #c9c9c9;
+      margin: 15px 0;
+    }
   }
 }

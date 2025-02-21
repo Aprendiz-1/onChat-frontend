@@ -8,22 +8,24 @@
   margin-bottom: 12px;
   position: relative;
 
-  .select_status {
+  .user_status_content {
     position: absolute;
     top: 12px;
     right: 12px;
-    padding: 2px 0;
-    border: none;
-    outline: none;
-    border-radius: 15px;
-    color: #f0f0f0;
     background-color: #4bc16e;
+    border-radius: 20px;
+    padding: 3px 10px;
+
+    span {
+      font-size: 14px;
+      color: #f0f0f0;
+    }
   }
 
   img {
     border-radius: 50%;
-    border: 2px solid #4bc16e;
-  }
+    border: 2.5px solid #4bc16e;
+  } 
 
   .user_text_content {
     display: flex;
@@ -40,5 +42,14 @@
       font-size: 11px;
       color: #c9c9c9;
     }
+  }
+
+  .edit_button {
+    background: none;
+    outline: none;
+    border: none;
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
   }
 }

@@ -14,7 +14,7 @@ export default function ContactCard({
   isSelected,
   selectConversation,
 }: ContactProp) {
-  return (      
+  return (
     <button
       onClick={() => selectConversation(data)}
       className={styles.card_container}

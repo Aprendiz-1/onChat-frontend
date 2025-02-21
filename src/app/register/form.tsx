@@ -37,6 +37,7 @@ export default function RegisterForm() {
         keyId="nome"
         placeholderText="Seu nome"
         value={name}
+        type="text"
         onChangeText={setName}
       />
 
@@ -45,6 +46,7 @@ export default function RegisterForm() {
         keyId="email"
         placeholderText="user@email.com"
         value={email}
+        type="email"
         onChangeText={setEmail}
       />
 
@@ -53,6 +55,7 @@ export default function RegisterForm() {
         keyId="pass"
         placeholderText="* * * * *"
         value={password}
+        type="password"
         onChangeText={setPassword}
       />
 
