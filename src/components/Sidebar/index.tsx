@@ -10,8 +10,8 @@ type SiderbarProps = {
 };
 
 export default function Sidebar({ setPeople, setContacts }: SiderbarProps) {
-  function logOut() {
-    removeCookie();
+  async function logOut() {
+    await removeCookie();
   }
 
   return (
@@ -27,7 +27,7 @@ export default function Sidebar({ setPeople, setContacts }: SiderbarProps) {
       </div>
 
       <button onClick={logOut} className={styles.logOut_button}>
-        <IoMdLogOut size={27} color="#222" />
+        <IoMdLogOut size={27} color="#f2f2f2" />
       </button>
     </div>
   );

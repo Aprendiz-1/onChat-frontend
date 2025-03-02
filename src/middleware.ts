@@ -1,18 +1,19 @@
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function middleware(request: NextRequest) {
-    const cookie = await cookies();
-    const token = cookie.get('user@token')?.value;
+export function middleware(request: NextRequest) {
+    const token = request.cookies.get('user@token')?.value;
 
+    const publicRoutes = ['/', '/register'];
     const protectedRoutes = ['/chats'];
-    const isProtectedRoutes = protectedRoutes.includes(request.nextUrl.pathname);
 
-    if(!isProtectedRoutes && token) {
+    const isPublicRoute = publicRoutes.includes(request.nextUrl.pathname);
+    const isProtectedRoute = protectedRoutes.includes(request.nextUrl.pathname);
+
+    if(token && isPublicRoute) {
         return NextResponse.redirect(new URL('/chats', request.url));
     }
 
-    if(isProtectedRoutes && !token) {
+    if(!token && isProtectedRoute) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 
@@ -20,5 +21,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/chats/:path*',],
+    matcher: ['/', '/register', '/chats/:path*',],
 };

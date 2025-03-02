@@ -1,15 +1,17 @@
-import { MessageProps, UserProps } from "@/app/chats/page";
+import { UserProps } from "@/app/chats/chats";
 import styles from "./style.module.scss";
 
 type MessageItemProp = {
   data: MessageProps;
   user: UserProps;
+  isFirst: boolean;
   recipientName?: string;
 };
 
 export default function MessageItem({
   data,
   user,
+  isFirst,
   recipientName,
 }: MessageItemProp) {
   const isSender = user._id === data.sender;
@@ -21,9 +23,11 @@ export default function MessageItem({
         alignSelf: isSender ? "flex-end" : "flex-start",
       }}
     >
-      <span className={styles.messageTitle}>
-        {isSender ? user.name : recipientName}
-      </span>
+      {isFirst && (
+        <span className={styles.messageTitle}>
+          {isSender ? user.name : recipientName}
+        </span>
+      )}
 
       <div
         className={styles.messageTextContent}

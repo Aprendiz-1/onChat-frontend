@@ -1,10 +1,10 @@
 import MessageItem from "../MessageItem";
 import styles from "./styles.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MessagesInput from "../MessagesInput";
 import TopMessagesCard from "../TopMessagesCard";
 import { BiMessageSquareX } from "react-icons/bi";
-import { api } from "@/services/api";
+import api from "@/services/api";
 import { socket } from "@/socket";
 import { ConversationProps, UserProps } from "@/app/chats/chats";
 
@@ -20,6 +20,7 @@ export default function MessagesCard({
   const [socketInstance] = useState(socket(user._id));
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
+  const messagesContentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     loadMessages(currentConversation?.conversationId);
@@ -34,6 +35,14 @@ export default function MessagesCard({
       socketInstance.off("receive_message");
     };
   }, [currentConversation, socketInstance]);
+
+  useEffect(() => {
+    const scrollableElement = messagesContentRef.current;
+
+    if (scrollableElement) {
+      scrollableElement.scrollTop = scrollableElement.scrollHeight;
+    }
+  }, [messages]);
 
   async function loadMessages(conversationId: string) {
     if (!conversationId) {
@@ -90,15 +99,21 @@ export default function MessagesCard({
     <div className={styles.messages_card}>
       <TopMessagesCard currentConversation={currentConversation} />
 
-      <div className={styles.messages_content}>
-        {messages.map((mess, index) => (
-          <MessageItem
-            key={index}
-            data={mess}
-            user={user}
-            recipientName={currentConversation?.name}
-          />
-        ))}
+      <div className={styles.messages_content} ref={messagesContentRef}>
+        {messages.map((mess, index) => {
+          const isFirstMessage =
+            index === 0 || messages[index - 1].sender !== mess.sender;
+
+          return (
+            <MessageItem
+              key={index}
+              data={mess}
+              user={user}
+              isFirst={isFirstMessage}
+              recipientName={currentConversation?.name}
+            />
+          );
+        })}
       </div>
 
       <MessagesInput

@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { api } from "@/services/api";
+import api from "@/services/api";
 import { useRouter } from "next/navigation";
+import BeatLoader from "react-spinners/BeatLoader";
 import LoginInput from "@/components/LoginInput";
 import styles from "../../styles/auth.module.scss";
 
@@ -12,6 +13,7 @@ export default function RegisterForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loadingAuth, setLoadingAuth] = useState(false);
 
   async function handleRegister(e: FormEvent) {
     e.preventDefault();
@@ -22,11 +24,13 @@ export default function RegisterForm() {
         return;
       }
 
+      setLoadingAuth(true);
       await api.post("/register", { name, email, password });
       router.push("/");
+      setLoadingAuth(false);
     } catch (error) {
       console.log(error);
-      alert(`Erro ao criar usuário: ${error?.message}`);
+      setLoadingAuth(false);
     }
   }
 
@@ -59,7 +63,13 @@ export default function RegisterForm() {
         onChangeText={setPassword}
       />
 
-      <button type="submit">Criar conta</button>
+      <button type="submit">
+        {loadingAuth ? (
+          <BeatLoader color="#fff" loading={loadingAuth} size={10} />
+        ) : (
+          "Criar conta"
+        )}
+      </button>
       <Link href="/">Fazer login</Link>
     </form>
   );

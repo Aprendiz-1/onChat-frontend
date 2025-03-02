@@ -2,16 +2,18 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { api } from "@/services/api";
+import api from "@/services/api";
 import { useRouter } from "next/navigation";
 import { setCookie } from "../cookies";
 import LoginInput from "@/components/LoginInput";
+import BeatLoader from "react-spinners/BeatLoader";
 import styles from "../styles/auth.module.scss";
 
 export default function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loadingAuth, setLoadingAuth] = useState(false);
 
   async function handleLogin(e: FormEvent) {
     e.preventDefault();
@@ -22,25 +24,16 @@ export default function LoginForm() {
         return;
       }
 
+      setLoadingAuth(true);
       const response = await api.post("/login", { email, password });
+      const { token } = response.data;
 
-      const { _id, name, avatar, token } = response.data;
-      setCookie(token);
-
-      const userData = {
-        _id,
-        name,
-        email,
-        avatar,
-      };
-
-      localStorage.setItem("user@data", JSON.stringify(userData));
-      setTimeout(() => {
-        router.push("/chats");
-      }, 1000);
+      await setCookie(token);
+      router.push("/chats");
+      setLoadingAuth(false);
     } catch (error) {
       console.log(error);
-      alert(`Erro ao logar usuário: ${error?.message}`);
+      setLoadingAuth(false);
     }
   }
 
@@ -64,7 +57,13 @@ export default function LoginForm() {
         onChangeText={setPassword}
       />
 
-      <button type="submit">Login</button>
+      <button type="submit">
+        {loadingAuth ? (
+          <BeatLoader color="#fff" loading={loadingAuth} size={10} />
+        ) : (
+          "Login"
+        )}
+      </button>
       <Link href="/register">Criar conta</Link>
     </form>
   );

@@ -10,9 +10,15 @@ const setCookie = async (token: string) => {
     name: "user@token",
     value: token,
     httpOnly: true,
+    maxAge: 86400,
     path: "/",
   });
 };
+
+const getAuthToken = async () => {
+  const token = (await cookies()).get("user@token")?.value;
+  return token || null;
+}
 
 const removeCookie = async () => {
   const cookieData = await cookies();
@@ -20,4 +26,4 @@ const removeCookie = async () => {
   redirect('/');
 }
 
-export { setCookie, removeCookie };
+export { setCookie, getAuthToken, removeCookie };

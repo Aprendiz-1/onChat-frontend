@@ -6,15 +6,6 @@
   border-radius: 20px;
 }
 
-.contacts_container::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
 .contacts_container::-webkit-scrollbar {
   width: 0;
-}
-
-.contacts_container::-webkit-scrollbar-thumb {
-  background-color: #8b8b8b;
-  border-radius: 10px;
 }
