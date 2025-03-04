@@ -61,8 +61,8 @@ export default function ChatsPage() {
     try {
       const response = await api.get("/get-user");
 
-      const { _id, name, email }: UserProps = response.data;
-      setUser({ _id, name, email, status: "online" });
+      const { _id, name, email, nickname }: UserProps = response.data;
+      setUser({ _id, name, email, nickname, status: "online" });
 
       if (_id) {
         await loadConversations(_id);
