@@ -19,30 +19,37 @@ export type UserProps = {
 };
 
 export type ConversationProps = {
+  _id: string;
+  name: string;
+  status: string;
+  avatar?: string;
+  lastMessage?: {
+    sender: string;
+    text: string;
+    createdAt: Date;
+  };
+};
+
+export type CurrentConversationProps = {
   conversationId: string;
-  recipientName: string;
-  recipientAvatar?: string;
+  _id: string;
+  name: string;
+  status: string;
+  avatar?: string;
 };
 
 export type CardsListageProps = {
   type: string;
-  list: UserProps[];
+  list: UserProps[] | ConversationProps[];
 };
 
 export default function ChatsPage() {
-  const [user, setUser] = useState<UserProps>({
-    _id: "",
-    name: "",
-    nickname: "",
-    email: "",
-    avatar: "",
-    status: "",
-  });
-  const [users, setUsers] = useState<Array<UserProps>>([]);
-  const [conversations, setConversations] = useState<Array<UserProps>>([]);
+  const [user, setUser] = useState<UserProps>();
+  const [users, setUsers] = useState<UserProps[]>([]);
+  const [conversations, setConversations] = useState<ConversationProps[]>([]);
   const [cardsListage, setCardsListage] = useState<CardsListageProps>();
   const [currentConversation, setCurrentConversation] =
-    useState<ConversationProps>();
+    useState<CurrentConversationProps>();
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
@@ -88,10 +95,10 @@ export default function ChatsPage() {
     }
   }
 
-  async function selectConversation(recipient: UserProps) {
+  async function selectConversation(recipient: UserProps | undefined) {
     try {
       const response = await api.post("/get-conversation", {
-        participants: [user._id, recipient._id],
+        participants: [user?._id, recipient?._id],
       });
 
       const conversation = response.data;
@@ -106,10 +113,10 @@ export default function ChatsPage() {
     }
   }
 
-  async function createConversation(recipient: UserProps) {
+  async function createConversation(recipient: UserProps | undefined) {
     try {
       const response = await api.post("/create-conversation", {
-        participants: [user._id, recipient._id],
+        participants: [user?._id, recipient?._id],
       });
 
       const conversation = response.data;
@@ -150,6 +157,7 @@ export default function ChatsPage() {
         <UserCard user={user} openModal={() => setModalVisible(true)} />
         <ContactsContent
           contacts={cardsListage}
+          setContacts={setCardsListage}
           selectConversation={selectConversation}
           createConversation={createConversation}
         />

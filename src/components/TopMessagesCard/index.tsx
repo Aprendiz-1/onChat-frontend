@@ -1,8 +1,13 @@
 import Image from "next/image";
 import user_default from "../../assets/user_default.png";
+import { CurrentConversationProps } from "@/app/chats/page";
 import styles from "./styles.module.scss";
 
-export default function TopMessagesCard({ currentConversation }) {
+type TopCardProps = {
+  currentConversation: CurrentConversationProps | undefined;
+};
+
+export default function TopMessagesCard({ currentConversation }: TopCardProps) {
   return (
     <div className={styles.top_content}>
       <Image
@@ -18,7 +23,7 @@ export default function TopMessagesCard({ currentConversation }) {
           borderWidth: 2,
           borderStyle: "solid",
           borderColor:
-            currentConversation.status === "online" ? "#4bc16e" : "#555",
+            currentConversation?.status === "online" ? "#4bc16e" : "#555",
         }}
       />
 

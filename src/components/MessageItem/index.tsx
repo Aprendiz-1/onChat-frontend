@@ -1,9 +1,10 @@
-import { UserProps } from "@/app/chats/chats";
 import styles from "./style.module.scss";
+import { MessageProps } from "../MessagesCard";
+import { UserProps } from "@/app/chats/page";
 
 type MessageItemProp = {
   data: MessageProps;
-  user: UserProps;
+  user: UserProps | undefined;
   isFirst: boolean;
   recipientName?: string;
 };
@@ -14,7 +15,7 @@ export default function MessageItem({
   isFirst,
   recipientName,
 }: MessageItemProp) {
-  const isSender = user._id === data.sender;
+  const isSender = user?._id === data.sender;
 
   return (
     <div

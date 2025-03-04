@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { TbEdit } from "react-icons/tb";
 import user_default from "../../assets/user_default.png";
+import { UserProps } from "@/app/chats/page";
 import styles from "./styles.module.scss";
-import { UserProps } from "@/app/chats/chats";
 
 type UserCardProp = {
-  user: UserProps;
+  user: UserProps | undefined;
   openModal: () => void;
 };
 
@@ -17,7 +17,7 @@ export default function UserCard({ user, openModal }: UserCardProp) {
       </div>
 
       <Image
-        src={user.avatar ? user.avatar : user_default}
+        src={user?.avatar ? user.avatar : user_default}
         alt="Avatar"
         height={70}
       />

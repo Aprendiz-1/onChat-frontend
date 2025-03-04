@@ -6,19 +6,26 @@ import TopMessagesCard from "../TopMessagesCard";
 import { BiMessageSquareX } from "react-icons/bi";
 import api from "@/services/api";
 import { socket } from "@/socket";
-import { ConversationProps, UserProps } from "@/app/chats/chats";
+import { CurrentConversationProps, UserProps } from "@/app/chats/page";
 
 type MessageCardProps = {
-  user: UserProps;
-  currentConversation: ConversationProps;
+  user: UserProps | undefined;
+  currentConversation: CurrentConversationProps | undefined;
+};
+
+export type MessageProps = {
+  conversationId: string;
+  text: string;
+  sender?: string;
+  createdAt?: Date;
 };
 
 export default function MessagesCard({
   user,
   currentConversation,
 }: MessageCardProps) {
-  const [socketInstance] = useState(socket(user._id));
-  const [messages, setMessages] = useState([]);
+  const [socketInstance] = useState(socket(user?._id));
+  const [messages, setMessages] = useState<MessageProps[]>([]);
   const [messageText, setMessageText] = useState("");
   const messagesContentRef = useRef<HTMLDivElement | null>(null);
 
@@ -44,7 +51,7 @@ export default function MessagesCard({
     }
   }, [messages]);
 
-  async function loadMessages(conversationId: string) {
+  async function loadMessages(conversationId: string | undefined) {
     if (!conversationId) {
       return;
     }

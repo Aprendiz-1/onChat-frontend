@@ -1,12 +1,12 @@
 import { SlClose } from "react-icons/sl";
 import styles from "./styles.module.scss";
 import { FormEvent, useState } from "react";
-import { UserProps } from "@/app/chats/chats";
 import api from "@/services/api";
+import { UserProps } from "@/app/chats/page";
 
 type ModalProp = {
   closeModal: () => void;
-  user: UserProps;
+  user: UserProps | undefined;
 };
 
 export default function EditUserModel({ closeModal, user }: ModalProp) {
@@ -36,7 +36,7 @@ export default function EditUserModel({ closeModal, user }: ModalProp) {
         <fieldset>
           <legend>Nome</legend>
           <input
-            placeholder={user.name}
+            placeholder={user?.name}
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -45,7 +45,7 @@ export default function EditUserModel({ closeModal, user }: ModalProp) {
         <fieldset>
           <legend>Email</legend>
           <input
-            placeholder={user.email}
+            placeholder={user?.email}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
