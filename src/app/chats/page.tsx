@@ -55,15 +55,18 @@ export default function ChatsPage() {
   useEffect(() => {
     loadUser();
     loadContacts();
-    loadConversations();
   }, []);
 
   async function loadUser() {
     try {
       const response = await api.get("/get-user");
 
-      const { _id, name, email } = response.data;
+      const { _id, name, email }: UserProps = response.data;
       setUser({ _id, name, email, status: "online" });
+
+      if (_id) {
+        await loadConversations(_id);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -79,12 +82,19 @@ export default function ChatsPage() {
     }
   }
 
-  async function loadConversations() {
+  async function loadConversations(user_id: string | undefined) {
     try {
+      if (!user_id) {
+        return;
+      }
+
       const response = await api.get("/list-conversations");
 
       const convs = response.data.map((conv) => {
-        const otherParticipant = conv.participants[1]; // ajustar lógica
+        const otherParticipant = conv.participants.find(
+          (part) => part._id !== user_id
+        );
+
         return { ...otherParticipant, lastMessage: conv.lastMessage };
       });
 
@@ -156,10 +166,12 @@ export default function ChatsPage() {
       <div className={styles.cards_container}>
         <UserCard user={user} openModal={() => setModalVisible(true)} />
         <ContactsContent
+          user={user}
           contacts={cardsListage}
           setContacts={setCardsListage}
           selectConversation={selectConversation}
           createConversation={createConversation}
+          loadConvs={loadConversations}
         />
       </div>
 

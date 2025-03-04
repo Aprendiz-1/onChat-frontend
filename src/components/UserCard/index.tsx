@@ -24,7 +24,11 @@ export default function UserCard({ user, openModal }: UserCardProp) {
 
       <div className={styles.user_text_content}>
         <span className={styles.user_name}>{user?.name}</span>
-        <span className={styles.user_email}>{user?.email}</span>
+        {user?.nickname ? (
+          <span className={styles.user_email}>{user?.nickname}</span>
+        ) : (
+          <span className={styles.user_email}>{user?.email}</span>
+        )}
       </div>
 
       <button onClick={openModal} className={styles.edit_button}>
